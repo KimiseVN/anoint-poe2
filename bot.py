@@ -19,7 +19,7 @@ EXCEL_FILE = "AnointList.xlsx"
 
 # Kiểm tra và tạo file Excel nếu chưa tồn tại
 if not os.path.exists(EXCEL_FILE):
-    df = pd.DataFrame(columns=["Name", "Type", "Effect"])
+    df = pd.DataFrame(columns=["Name", "Type", "Effects"])
     df.to_excel(EXCEL_FILE, index=False)
     print("✅ Đã tạo file AnointList.xlsx")
 
