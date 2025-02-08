@@ -5,10 +5,10 @@ import os
 # Đọc dữ liệu từ file AnointList.xlsx và nhập vào data
 data = pd.read_excel("AnointList.xlsx")
 
-# Loại bỏ khoảng trắng thừa và chuyển tất cả tên skill trong cột 'Name' về chữ thường
+# Làm sạch dữ liệu
 data['Name'] = data['Name'].str.strip().str.lower()
-data['Distilled'] = data['Distilled'].str.strip()  # Loại bỏ khoảng trắng thừa trong cột Distilled
-data['Effects'] = data['Effects'].str.strip()  # Loại bỏ khoảng trắng thừa trong cột Effects
+data['Distilled'] = data['Distilled'].str.replace('\n', ' ', regex=True).str.strip()  # Loại bỏ '\n' và khoảng trắng thừa
+data['Effects'] = data['Effects'].str.strip()  # Loại bỏ khoảng trắng thừa
 
 # Đếm số lượng skill được nhập vào
 num_skills = len(data)  # Đếm tổng số dòng trong file Excel
@@ -43,11 +43,9 @@ async def on_message(message):
     if message.channel.id != ALLOWED_CHANNEL_ID:
         return  # Không xử lý tin nhắn nếu không phải kênh được chỉ định
 
-    # Debugging: In ra nội dung tin nhắn người dùng nhập vào
-    print(f"Tin nhắn người dùng gửi: {message.content}")
-
     # Xử lý tin nhắn văn bản (tìm skill theo tên)
     skill_name = message.content.strip().lower()  # Loại bỏ khoảng trắng và chuyển thành chữ thường
+    print(f'Người dùng nhập: {skill_name}')  # Debugging: In ra tên skill người dùng nhập
 
     # Tìm skill trong toàn bộ cột "Name" (kiểm tra phần tử con trong tên)
     skill_info = data[data['Name'].str.contains(skill_name, case=False, na=False)]  # Tìm kiếm không phân biệt chữ hoa/chữ thường
