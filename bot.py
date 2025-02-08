@@ -54,7 +54,7 @@ async def on_message(message):
 
     if not skill_info.empty:
         skill_type = skill_info.iloc[0]["Type"]
-        skill_effect = skill_info.iloc[0]["Effect"]
+        skill_effect = skill_info.iloc[0]["Effects"]
         skill_effect_vi = translator.translate(skill_effect, src="en", dest="vi").text
 
         response = (
@@ -95,7 +95,7 @@ async def process_image(message, attachment):
             for skill in found_skills:
                 skill_info = data[data["Name"] == skill].iloc[0]
                 skill_type = skill_info["Type"]
-                skill_effect = skill_info["Effect"]
+                skill_effect = skill_info["Effects"]
                 skill_effect_vi = translator.translate(skill_effect, src="en", dest="vi").text
 
                 response_text += (
