@@ -5,6 +5,9 @@ import os
 # Đọc dữ liệu từ file Excel
 data = pd.read_excel("AnointList.xlsx")
 
+# Đếm số lượng Notable Passive
+notable_passive_count = len(data['Notable Passive'].dropna())  # Đếm số lượng dòng có dữ liệu trong cột 'Notable Passive'
+
 # Tạo bot với intents để lắng nghe tin nhắn
 intents = discord.Intents.default()
 intents.messages = True  # Đảm bảo bot có thể lắng nghe các tin nhắn
@@ -17,6 +20,12 @@ ALLOWED_CHANNEL_ID = 1337773283860545546
 @bot.event
 async def on_ready():
     print(f'Bot đã đăng nhập như {bot.user}')
+    print(f'Có {notable_passive_count} Notable Passive đã được nhập vào.')
+
+    # Thông báo trên Discord rằng bot đã được khởi động và có bao nhiêu Notable Passive được nhập vào
+    channel = bot.get_channel(ALLOWED_CHANNEL_ID)  # Lấy kênh dựa trên ID
+    if channel:
+        await channel.send(f'Bot đã được khởi động! Có tổng cộng {notable_passive_count} Notable Passive đã được nhập vào.')
 
 # Sự kiện khi bot nhận tin nhắn
 @bot.event
