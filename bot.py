@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 # Đọc dữ liệu từ file Excel
-data = pd.read_excel("SkillsList.xlsx")
+data = pd.read_excel("AnointList.xlsx")
 
 # Loại bỏ khoảng trắng thừa và chuyển tất cả tên skill trong cột 'NotablePassive' về chữ thường
 data['NotablePassive'] = data['NotablePassive'].str.strip().str.lower()
@@ -23,7 +23,7 @@ ALLOWED_CHANNEL_ID = 1337773283860545546
 async def on_ready():
     print(f'Bot đã đăng nhập như {bot.user}')
 
-# Sự kiện khi bot nhận tin nhắn
+# Lệnh !clear để xóa lịch sử tin nhắn trong kênh
 @bot.event
 async def on_message(message):
     # Tránh bot phản hồi chính nó
@@ -33,6 +33,16 @@ async def on_message(message):
     # Kiểm tra nếu tin nhắn được gửi từ đúng kênh
     if message.channel.id != ALLOWED_CHANNEL_ID:
         return  # Không xử lý tin nhắn nếu không phải kênh được chỉ định
+
+    # Lệnh !clear để xóa tin nhắn trong kênh
+    if message.content.startswith("!clear"):
+        # Kiểm tra quyền hạn của người gửi tin nhắn (đảm bảo họ có quyền xóa tin nhắn)
+        if message.author.guild_permissions.manage_messages:
+            # Xóa tất cả tin nhắn trong kênh (có thể chỉ xóa một số lượng nhất định nếu muốn)
+            await message.channel.purge(limit=100)  # Thay 100 bằng số lượng tin nhắn bạn muốn xóa
+            await message.channel.send("Lịch sử tin nhắn đã được xóa!", delete_after=5)  # Thông báo và xóa sau 5 giây
+        else:
+            await message.channel.send("Bạn không có quyền xóa tin nhắn trong kênh này.")
 
     # Xử lý tin nhắn văn bản (tìm skill theo tên)
     skill_name = message.content.strip().lower()  # Loại bỏ khoảng trắng và chuyển thành chữ thường
