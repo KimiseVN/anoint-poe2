@@ -2,6 +2,9 @@ import discord
 import pandas as pd
 import os
 
+# Lấy token từ biến môi trường
+discord_token = os.getenv('DISCORD_TOKEN')
+
 # Đọc dữ liệu từ file Excel
 data = pd.read_excel("AnointList.xlsx")
 
@@ -36,9 +39,6 @@ async def on_message(message):
         await message.channel.send(f"**Distilled Emotions**: {distilled_emotions}\n**Anoint Effects**: {anoint_effects}")
     else:
         await message.channel.send("Không tìm thấy thông tin cho Notable Passive này.")
-
-# Lấy token từ biến môi trường
-discord_token = os.getenv('DISCORD_TOKEN')
 
 # Chạy bot
 if discord_token:
