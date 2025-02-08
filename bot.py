@@ -5,7 +5,6 @@ import pytesseract
 from PIL import Image
 import requests
 from io import BytesIO
-from googletrans import Translator
 from discord.ext import commands
 
 # Lấy Token từ biến môi trường
@@ -35,7 +34,6 @@ intents.message_content = True
 
 # Khởi tạo bot với prefix "!"
 bot = commands.Bot(command_prefix="!", intents=intents)
-translator = Translator()
 
 @bot.event
 async def on_ready():
@@ -55,12 +53,11 @@ async def on_message(message):
     if not skill_info.empty:
         skill_type = skill_info.iloc[0]["Type"]
         skill_effect = skill_info.iloc[0]["Effects"]
-        skill_effect_vi = translator.translate(skill_effect, src="en", dest="vi").text
 
         response = (
-            f'**{skill_name.capitalize()}** ({skill_type})\n'
-            f'📜 **Effect (EN):** {skill_effect}\n'
-            f'🇻🇳 **Effect (VI):** ||{skill_effect_vi}||'
+            f'**{skill_name.capitalize()}**\n'
+            f'📜 **Distilled:** {skill_type}\n'
+            f'🇻🇳 **Effect:** {skill_effect}'
         )
         await message.channel.send(response)
 
@@ -96,12 +93,11 @@ async def process_image(message, attachment):
                 skill_info = data[data["Name"] == skill].iloc[0]
                 skill_type = skill_info["Type"]
                 skill_effect = skill_info["Effects"]
-                skill_effect_vi = translator.translate(skill_effect, src="en", dest="vi").text
 
                 response_text += (
-                    f'\n**{skill}** ({skill_type})\n'
-                    f'📜 **Effect (EN):** {skill_effect}\n'
-                    f'🇻🇳 **Effect (VI):** ||{skill_effect_vi}||\n'
+            f'**{skill_name.capitalize()}**\n'
+            f'📜 **Distilled:** {skill_type}\n'
+            f'🇻🇳 **Effect:** {skill_effect}'
                 )
             await message.channel.send(response_text)
         else:
