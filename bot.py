@@ -2,13 +2,16 @@ import discord
 import pandas as pd
 import os
 
-# Đọc dữ liệu từ file AnointList.xlsx
+# Đọc dữ liệu từ file AnointList.xlsx và nhập vào data
 data = pd.read_excel("AnointList.xlsx")
 
 # Loại bỏ khoảng trắng thừa và chuyển tất cả tên skill trong cột 'Name' về chữ thường
 data['Name'] = data['Name'].str.strip().str.lower()
 data['Distilled'] = data['Distilled'].str.strip()  # Loại bỏ khoảng trắng thừa trong cột Distilled
 data['Effects'] = data['Effects'].str.strip()  # Loại bỏ khoảng trắng thừa trong cột Effects
+
+# Đếm số lượng skill được nhập vào
+num_skills = len(data)  # Đếm tổng số dòng trong file Excel
 
 # Tạo bot với intents để lắng nghe tin nhắn
 intents = discord.Intents.default()
@@ -22,6 +25,12 @@ ALLOWED_CHANNEL_ID = 1337773283860545546
 @bot.event
 async def on_ready():
     print(f'Bot đã đăng nhập như {bot.user}')
+    print(f'Đã nhập {num_skills} Skill vào dữ liệu.')
+
+    # Thông báo trên Discord rằng bot đã nhập bao nhiêu Skill vào dữ liệu
+    channel = bot.get_channel(ALLOWED_CHANNEL_ID)  # Lấy kênh dựa trên ID
+    if channel:
+        await channel.send(f'Bot đã được khởi động! Đã nhập tổng cộng {num_skills} Skill vào dữ liệu.')
 
 # Sự kiện khi bot nhận tin nhắn
 @bot.event
