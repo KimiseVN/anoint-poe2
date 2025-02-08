@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 # Đọc dữ liệu từ file Excel
-data = pd.read_excel("Anointlist.xlsx")
+data = pd.read_excel("SkillsList.xlsx")
 
 # Loại bỏ khoảng trắng thừa và chuyển tất cả tên skill trong cột 'NotablePassive' về chữ thường
 data['NotablePassive'] = data['NotablePassive'].str.strip().str.lower()
@@ -43,16 +43,19 @@ async def on_message(message):
 
     # Kiểm tra nếu tìm thấy skill
     if not skill_info.empty:
-        # Lấy thông tin từ cột 'DistilledEmotions' và 'AnointEffects'
-        distilled_emotions = skill_info.iloc[0]["DistilledEmotions"]
-        anoint_effects = skill_info.iloc[0]["AnointEffects"]
+        # Tạo phản hồi với tất cả kết quả tìm được
+        response = ""
+        for index, row in skill_info.iterrows():
+            distilled_emotions = row["DistilledEmotions"]
+            anoint_effects = row["AnointEffects"]
 
-        # Tạo phản hồi và gửi thông báo
-        response = (
-            f'**{skill_name.capitalize()}**\n'
-            f'💬 **Distilled Emotions:** {distilled_emotions}\n'
-            f'⚡ **Anoint Effects:** {anoint_effects}'
-        )
+            # Thêm thông tin của mỗi skill vào phản hồi
+            response += (
+                f'**{row["NotablePassive"].capitalize()}**\n'
+                f'💬 **Distilled Emotions:** {distilled_emotions}\n'
+                f'⚡ **Anoint Effects:** {anoint_effects}\n\n'
+            )
+        
         await message.channel.send(response)
     else:
         await message.channel.send("Không tìm thấy thông tin cho skill này.")
