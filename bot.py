@@ -2,9 +2,6 @@ import discord
 import pandas as pd
 import os
 
-# Lấy token từ biến môi trường
-discord_token = os.getenv('DISCORD_TOKEN')
-
 # Đọc dữ liệu từ file Excel
 data = pd.read_excel("AnointList.xlsx")
 
@@ -12,6 +9,9 @@ data = pd.read_excel("AnointList.xlsx")
 intents = discord.Intents.default()
 intents.messages = True  # Đảm bảo bot có thể lắng nghe các tin nhắn
 bot = discord.Client(intents=intents)
+
+# Đặt ID kênh mà bot sẽ hoạt động
+ALLOWED_CHANNEL_ID = 1337773283860545546
 
 # Sự kiện khi bot đã sẵn sàng
 @bot.event
@@ -25,6 +25,10 @@ async def on_message(message):
     if message.author == bot.user:
         return
 
+    # Kiểm tra nếu tin nhắn được gửi từ đúng kênh
+    if message.channel.id != ALLOWED_CHANNEL_ID:
+        return  # Không xử lý tin nhắn nếu không phải kênh được chỉ định
+
     # Kiểm tra nếu tin nhắn có chứa tên Notable Passive
     notable_passive = message.content.strip()
     
@@ -36,9 +40,12 @@ async def on_message(message):
         distilled_emotions = row['Distilled Emotions'].values[0]
         anoint_effects = row['Anoint Effects'].values[0]
         
-        await message.channel.send(f"**Distilled Emotions**: {distilled_emotions}\n**Anoint Effects**: {anoint_effects}")
+        await message.channel.send(f"Distilled Emotions: {distilled_emotions}\nAnoint Effects: {anoint_effects}")
     else:
         await message.channel.send("Không tìm thấy thông tin cho Notable Passive này.")
+
+# Lấy token từ biến môi trường
+discord_token = os.getenv('DISCORD_TOKEN')
 
 # Chạy bot
 if discord_token:
