@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 # Đọc dữ liệu từ file Excel
-data = pd.read_excel("AnointList.xlsx")
+data = pd.read_excel("Anointlist.xlsx")
 
 # Đếm số lượng Notable Passive
 notable_passive_count = len(data['Notable Passive'].dropna())  # Đếm số lượng dòng có dữ liệu trong cột 'Notable Passive'
