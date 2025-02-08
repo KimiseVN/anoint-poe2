@@ -9,7 +9,7 @@ from googletrans import Translator
 from discord.ext import commands
 
 # Lấy Token từ biến môi trường
-TOKEN = os.getenv("DISCORD_BOT_TOKEN")
+TOKEN = os.getenv("DISCORD_TOKEN")
 
 # ID của kênh được phép bot hoạt động (Thay bằng ID kênh Discord thực tế)
 ALLOWED_CHANNEL_ID = 1337773283860545546  # Cập nhật Channel ID của bạn
@@ -21,7 +21,7 @@ EXCEL_FILE = "AnointList.xlsx"
 if not os.path.exists(EXCEL_FILE):
     df = pd.DataFrame(columns=["Name", "Type", "Effect"])
     df.to_excel(EXCEL_FILE, index=False)
-    print("✅ Đã tạo file passive_skills.xlsx")
+    print("✅ Đã tạo file AnointList.xlsx")
 
 # Load dữ liệu từ file Excel
 def load_data():
