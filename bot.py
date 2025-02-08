@@ -3,7 +3,10 @@ import pandas as pd
 import os
 
 # Đọc dữ liệu từ file Excel
-data = pd.read_excel("Anointlist.xlsx")
+data = pd.read_excel("AnointList.xlsx")
+
+# Loại bỏ khoảng trắng thừa và chuyển tất cả về chữ thường
+data['Notable Passive'] = data['Notable Passive'].str.strip().str.lower()
 
 # Đếm số lượng Notable Passive
 notable_passive_count = len(data['Notable Passive'].dropna())  # Đếm số lượng dòng có dữ liệu trong cột 'Notable Passive'
@@ -39,7 +42,7 @@ async def on_message(message):
         return  # Không xử lý tin nhắn nếu không phải kênh được chỉ định
 
     # Kiểm tra nếu tin nhắn có chứa tên Notable Passive
-    notable_passive = message.content.strip()
+    notable_passive = message.content.strip().lower()  # Loại bỏ khoảng trắng và chuyển thành chữ thường
     
     # Tìm kiếm tên Notable Passive trong dữ liệu
     row = data[data['Notable Passive'] == notable_passive]
