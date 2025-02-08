@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 # Đọc dữ liệu từ file Excel
-data = pd.read_excel("AnointList.xlsx")
+data = pd.read_excel("Anointlist.xlsx")
 
 # Loại bỏ khoảng trắng thừa và chuyển tất cả về chữ thường
 data['Notable Passive'] = data['Notable Passive'].str.strip().str.lower()
