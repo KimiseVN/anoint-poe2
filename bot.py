@@ -15,7 +15,7 @@ TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 ALLOWED_CHANNEL_ID = 1337203470167576607  # Cập nhật Channel ID của bạn
 
 # Tên file dữ liệu Excel
-EXCEL_FILE = "passive_skills.xlsx"
+EXCEL_FILE = "AnointList.xlsx"
 
 # Kiểm tra và tạo file Excel nếu chưa tồn tại
 if not os.path.exists(EXCEL_FILE):
