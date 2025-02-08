@@ -6,7 +6,7 @@ import os
 data = pd.read_excel("AnointList.xlsx")
 
 # Làm sạch dữ liệu
-data['Name'] = data['Name'].str.strip().str.lower()
+data['Name'] = data['Name'].str.strip().str.lower()  # Loại bỏ khoảng trắng thừa và chuyển thành chữ thường
 data['Distilled'] = data['Distilled'].str.replace('\n', ' ', regex=True).str.strip()  # Loại bỏ '\n' và khoảng trắng thừa
 data['Effects'] = data['Effects'].str.strip()  # Loại bỏ khoảng trắng thừa
 
