@@ -43,10 +43,14 @@ async def on_message(message):
 
     # Kiểm tra nếu tin nhắn có chứa tên Notable Passive
     notable_passive = message.content.strip().lower()  # Loại bỏ khoảng trắng và chuyển thành chữ thường
-    
+    print(f'Người dùng nhập: {notable_passive}')  # In ra tin nhắn người dùng nhập vào
+
+    # In ra dữ liệu trong Excel để kiểm tra
+    print("Dữ liệu Notable Passive trong Excel:")
+    print(data['Notable Passive'].head())  # In ra vài dòng đầu tiên trong cột 'Notable Passive' để kiểm tra
+
     # Tìm kiếm tên Notable Passive trong dữ liệu
     row = data[data['Notable Passive'] == notable_passive]
-    
     if not row.empty:
         # Trả về kết quả tương ứng từ các cột Distilled Emotions và Anoint Effects
         distilled_emotions = row['Distilled Emotions'].values[0]
