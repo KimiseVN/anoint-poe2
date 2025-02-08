@@ -12,7 +12,7 @@ from discord.ext import commands
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 
 # ID của kênh được phép bot hoạt động (Thay bằng ID kênh Discord thực tế)
-ALLOWED_CHANNEL_ID = 1337203470167576607  # Cập nhật Channel ID của bạn
+ALLOWED_CHANNEL_ID = 1337773283860545546  # Cập nhật Channel ID của bạn
 
 # Tên file dữ liệu Excel
 EXCEL_FILE = "AnointList.xlsx"
