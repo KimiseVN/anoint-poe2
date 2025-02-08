@@ -43,9 +43,11 @@ async def on_message(message):
     if message.channel.id != ALLOWED_CHANNEL_ID:
         return  # Không xử lý tin nhắn nếu không phải kênh được chỉ định
 
+    # Debugging: In ra nội dung tin nhắn người dùng nhập vào
+    print(f"Tin nhắn người dùng gửi: {message.content}")
+
     # Xử lý tin nhắn văn bản (tìm skill theo tên)
     skill_name = message.content.strip().lower()  # Loại bỏ khoảng trắng và chuyển thành chữ thường
-    print(f'Người dùng nhập: {skill_name}')  # Debugging: In ra tên skill người dùng nhập
 
     # Tìm skill trong toàn bộ cột "Name" (kiểm tra phần tử con trong tên)
     skill_info = data[data['Name'].str.contains(skill_name, case=False, na=False)]  # Tìm kiếm không phân biệt chữ hoa/chữ thường
@@ -54,7 +56,6 @@ async def on_message(message):
     if not skill_info.empty:
         # Tạo phản hồi với tất cả kết quả tìm được
         response = ""
-        count = 0
         for index, row in skill_info.iterrows():
             distilled_emotions = row["Distilled"]
             anoint_effects = row["Effects"]
@@ -66,18 +67,11 @@ async def on_message(message):
                 f'⚡ **Effects:** {anoint_effects}\n\n'
             )
 
-            count += 1
-            # Nếu tin nhắn quá dài (> 2000 ký tự), gửi nó và tạo phản hồi mới
-            if len(response) > 2000:
-                await message.channel.send(response)
-                response = ""  # Reset lại phản hồi sau khi gửi
-                count = 0
-
-        # Gửi tin nhắn còn lại nếu có
-        if response:
-            await message.channel.send(response)
+        await message.channel.send(response)
     else:
+        # Thông báo khi không tìm thấy skill trong dữ liệu
         await message.channel.send("Không tìm thấy thông tin cho skill này.")
+        print(f"Không tìm thấy thông tin cho skill: {skill_name}")
 
 # Lấy token từ biến môi trường
 discord_token = os.getenv('DISCORD_TOKEN')
