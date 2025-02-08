@@ -6,10 +6,10 @@ import os
 data = pd.read_excel("Anointlist.xlsx")
 
 # Loại bỏ khoảng trắng thừa và chuyển tất cả về chữ thường
-data['Notable Passive'] = data['Notable Passive'].str.strip().str.lower()
+data['NotablePassive'] = data['NotablePassive'].str.strip().str.lower()
 
 # Đếm số lượng Notable Passive
-notable_passive_count = len(data['Notable Passive'].dropna())  # Đếm số lượng dòng có dữ liệu trong cột 'Notable Passive'
+notable_passive_count = len(data['NotablePassive'].dropna())  # Đếm số lượng dòng có dữ liệu trong cột 'Notable Passive'
 
 # Tạo bot với intents để lắng nghe tin nhắn
 intents = discord.Intents.default()
@@ -47,14 +47,14 @@ async def on_message(message):
 
     # In ra dữ liệu trong Excel để kiểm tra
     print("Dữ liệu Notable Passive trong Excel:")
-    print(data['Notable Passive'].head())  # In ra vài dòng đầu tiên trong cột 'Notable Passive' để kiểm tra
+    print(data['NotablePassive'].head())  # In ra vài dòng đầu tiên trong cột 'Notable Passive' để kiểm tra
 
     # Tìm kiếm tên Notable Passive trong dữ liệu
-    row = data[data['Notable Passive'] == notable_passive]
+    row = data[data['NotablePassive'] == notable_passive]
     if not row.empty:
         # Trả về kết quả tương ứng từ các cột Distilled Emotions và Anoint Effects
-        distilled_emotions = row['Distilled Emotions'].values[0]
-        anoint_effects = row['Anoint Effects'].values[0]
+        distilled_emotions = row['DistilledEmotions'].values[0]
+        anoint_effects = row['AnointEffects'].values[0]
         
         await message.channel.send(f"Distilled Emotions: {distilled_emotions}\nAnoint Effects: {anoint_effects}")
     else:
