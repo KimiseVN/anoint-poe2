@@ -2,13 +2,13 @@ import discord
 import pandas as pd
 import os
 
-# Đọc dữ liệu từ file Excel
+# Đọc dữ liệu từ file AnointList.xlsx
 data = pd.read_excel("AnointList.xlsx")
 
-# Loại bỏ khoảng trắng thừa và chuyển tất cả tên skill trong cột 'NotablePassive' về chữ thường
-data['NotablePassive'] = data['NotablePassive'].str.strip().str.lower()
-data['DistilledEmotions'] = data['DistilledEmotions'].str.strip()  # Nếu cần, có thể áp dụng .str.strip() cho cột DistilledEmotions nếu có khoảng trắng thừa
-data['AnointEffects'] = data['AnointEffects'].str.strip()  # Nếu cần, có thể áp dụng .str.strip() cho cột AnointEffects nếu có khoảng trắng thừa
+# Loại bỏ khoảng trắng thừa và chuyển tất cả tên skill trong cột 'Name' về chữ thường
+data['Name'] = data['Name'].str.strip().str.lower()
+data['Distilled'] = data['Distilled'].str.strip()  # Loại bỏ khoảng trắng thừa trong cột Distilled
+data['Effects'] = data['Effects'].str.strip()  # Loại bỏ khoảng trắng thừa trong cột Effects
 
 # Tạo bot với intents để lắng nghe tin nhắn
 intents = discord.Intents.default()
@@ -38,8 +38,8 @@ async def on_message(message):
     skill_name = message.content.strip().lower()  # Loại bỏ khoảng trắng và chuyển thành chữ thường
     print(f'Người dùng nhập: {skill_name}')  # Debugging: In ra tên skill người dùng nhập
 
-    # Tìm skill trong toàn bộ cột "NotablePassive" (kiểm tra phần tử con trong tên)
-    skill_info = data[data['NotablePassive'].str.contains(skill_name, case=False, na=False)]  # Tìm kiếm không phân biệt chữ hoa/chữ thường
+    # Tìm skill trong toàn bộ cột "Name" (kiểm tra phần tử con trong tên)
+    skill_info = data[data['Name'].str.contains(skill_name, case=False, na=False)]  # Tìm kiếm không phân biệt chữ hoa/chữ thường
 
     # Kiểm tra nếu tìm thấy skill
     if not skill_info.empty:
@@ -47,14 +47,14 @@ async def on_message(message):
         response = ""
         count = 0
         for index, row in skill_info.iterrows():
-            distilled_emotions = row["DistilledEmotions"]
-            anoint_effects = row["AnointEffects"]
+            distilled_emotions = row["Distilled"]
+            anoint_effects = row["Effects"]
 
             # Thêm thông tin của mỗi skill vào phản hồi
             response += (
-                f'**{row["NotablePassive"].capitalize()}**\n'
-                f'💬 **Distilled Emotions:** {distilled_emotions}\n'
-                f'⚡ **Anoint Effects:** {anoint_effects}\n\n'
+                f'**{row["Name"].capitalize()}**\n'
+                f'💬 **Distilled:** {distilled_emotions}\n'
+                f'⚡ **Effects:** {anoint_effects}\n\n'
             )
 
             count += 1
